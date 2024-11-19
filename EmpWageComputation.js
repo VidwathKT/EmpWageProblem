@@ -2,19 +2,25 @@ function welcome(){
 console.log("Welcome to Employee Wage Computation Program");
 }
 welcome()
-
+const TotalWorkinDays = 20;
+let MonthlyWage=0;
 async function EmpWageComputation() {
+  for(i=0;i<TotalWorkinDays;i++){
     try{
         let attendanceStatus = await checkAttendance();
-        console.log(attendanceStatus);
+        //console.log(attendanceStatus);
         let empType = EmpType();
         const calculateWage = DailyWageCalculator(empType);
-        console.log(`Daily Wage of Employee is Rs.${calculateWage}`);
-    }
-    catch(error){
-        console.log(error);
+        MonthlyWage += calculateWage;
         
     }
+    catch(error){
+        
+        //console.log(error);
+        
+    }
+  }
+  console.log(`Monthly Wage of Employee is Rs.${MonthlyWage}`);
 }
 
 const checkAttendance = () => {
@@ -63,7 +69,7 @@ const EmpType = ()=>{
         default:
             type = 'unknown';
     }
-    console.log(`Employee Type is: ${type}`);
+    //console.log(`Employee Type is: ${type}`);
     return type
 }
 EmpWageComputation();     
