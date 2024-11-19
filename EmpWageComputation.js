@@ -6,8 +6,9 @@ welcome()
 async function EmpWageComputation() {
     try{
         let attendanceStatus = await checkAttendance();
-        const calculateWage = await DailyWageCalculator(attendanceStatus);
-        console.log(`Daily Wage of Employee is Rs.${calculateWage}`)
+        let empType = EmpType();
+        const calculateWage = await DailyWageCalculator(attendanceStatus,empType);
+        console.log(`Daily Wage of Employee is Rs.${calculateWage}`);
     }
     catch(error){
         console.log(error);
@@ -28,16 +29,23 @@ const checkAttendance = () => {
 
 const FullDayHour = 8;
 const WagePerHour = 20;
+const PartTimeHour = 4;
 
-const DailyWageCalculator = (status) => {
+const DailyWageCalculator = (status,type) => {
     return new Promise((resolve,reject) => {
         if(status === "Present"){
-            const Dailywage = FullDayHour*WagePerHour;
+            const WorkHour = type ? FullDayHour:PartTimeHour;    
+            const Dailywage = WorkHour*WagePerHour;
             resolve(Dailywage)
         }
         else{
             reject("absent = nowork = nosalary")
         }
     })
+}
+const EmpType = ()=>{
+    const type = Math.random() < 0.5 ? "PartTime" : "FullTime"
+    console.log(`Employee Type is: ${type}`);
+    return type === "FullTime"
 }
 EmpWageComputation();     
